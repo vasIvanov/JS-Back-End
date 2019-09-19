@@ -67,13 +67,14 @@ module.exports = (req, res) => {
                 }
 
                 let breeds = JSON.parse(data);
-                breeds.push(body, breeds);
+                breeds.push(body.breed);
+                
                 let json = JSON.stringify(breeds);
                 fs.writeFile('./data/breeds.json', json, 'utf-8', () => console.log('The breed was created succesfully'));
 
             });
 
-            // res.redirect(301, {location: '/'});
+            res.writeHead(302, {location: '/'});
             res.end();
             
         });
