@@ -145,6 +145,34 @@ module.exports = (req, res) => {
             console.log(err);
         });
     } else if(pathname.includes('/cats-find-new-home') && req.method === 'GET') {
-       
+        let filePath = path.normalize(
+            path.join(__dirname, '../views/catShelter.html')
+        );
+
+        const index = fs.createReadStream(filePath);
+
+        index.on('data', (data) => {
+            const catId = pathname.split('/').pop();
+            
+            let currentCat = cats.filter(e => e.id == catId)[0];
+            let imagePath = `src="../content/images/${currentCat.image}"`;
+            
+            let modifiedData = data.toString().replace('{{id}}', catId);
+            modifiedData = modifiedData.replace('src=""', imagePath);
+            modifiedData = modifiedData.replace('{{name}}', currentCat.name);
+            modifiedData = modifiedData.replace('{{description}}', currentCat.description);
+
+            modifiedData = modifiedData.replace('{{breed}}', currentCat.breed)
+            
+            res.write(modifiedData);
+        })
+
+        index.on('end', () => {
+            res.end();
+        });
+
+        index.on('error', (err) => {
+            console.log(err);
+        });
     }
 }
