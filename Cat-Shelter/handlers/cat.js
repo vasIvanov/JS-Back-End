@@ -8,6 +8,7 @@ const breeds = require('../data/breeds');
 
 module.exports = (req, res) => {
     const pathname = url.parse(req.url).pathname;
+    console.log(pathname);
     
     if(pathname === '/cats/add-cat' && req.method === 'GET') {
 
@@ -85,7 +86,8 @@ module.exports = (req, res) => {
 
     } else if(pathname === '/cats/add-cat' && req.method === 'POST') {
         let form = new formidable.IncomingForm();
-
+     
+        
         form.parse(req, (err ,fields, files) => {
             if(err) {throw err};
 
@@ -101,6 +103,8 @@ module.exports = (req, res) => {
                 if(err) throw err;
 
                 let allCats = JSON.parse(data);
+                console.log(cats.length);
+                
                 allCats.push({
                     id: cats.length + 1,
                     ...fields,
@@ -152,7 +156,7 @@ module.exports = (req, res) => {
         const index = fs.createReadStream(filePath);
 
         index.on('data', (data) => {
-            const catId = pathname.split('/').pop();
+            let catId = req.url.split('/')[2];
             
             let currentCat = cats.filter(e => e.id == catId)[0];
             let imagePath = `src="../content/images/${currentCat.image}"`;
@@ -173,6 +177,63 @@ module.exports = (req, res) => {
 
         index.on('error', (err) => {
             console.log(err);
+        });
+    } else if(pathname.includes('/cats-find-new-home') && req.method === 'POST') {
+            console.log('delete');
+            
+        fs.readFile('data/cats.json', 'utf-8', function readFileCallback(err, data) {
+            if(err) {
+                console.log(err);
+            } else {
+                
+                let currentCats = JSON.parse(data);
+                let catId = +req.url.split('/')[3];
+
+                currentCats = currentCats.filter((cat) => cat.id !== catId);
+                
+                let json = JSON.stringify(currentCats);
+                
+                fs.writeFile('data/cats.json', json, 'utf-8', () => {
+                    res.writeHead(302, {'location': '/'});
+                    res.end();
+                });
+            }
+        });
+    } else if(pathname.includes('/cats-edit') && req.method === 'POST'){
+        let form = new formidable.IncomingForm();
+       
+        form.parse(req, (err ,fields, files) => {
+            if(err) {throw err};
+
+            let oldPath = files.upload.path;
+            let newPath = path.normalize(path.join('C:\\Users\\vivan\\Desktop\\GitHub-repos\\JS-Back-End\\Cat-Shelter',  '/content/images/' + files.upload.name));
+            fs.rename(oldPath, newPath, (err) => {
+                if(err) throw err;
+                
+                console.log('Files was uploaded succesfully');
+            });
+            
+            fs.readFile('./data/cats.json', 'utf-8', (err, data) => {
+                if(err) throw err;
+    
+                let allCats = JSON.parse(data);
+                let catId = req.url.split('/')[2];
+                console.log(catId);
+                
+                let editedCat = {
+                    id: +catId,
+                    ...fields,
+                    image: files.upload.name
+                }
+                allCats[catId - 1] = editedCat;
+                console.log(allCats);
+                
+                let json = JSON.stringify(allCats);
+                fs.writeFile('./data/cats.json', json, () => {
+                    res.writeHead(301, {location: '/'});
+                    res.end()
+                });
+            });
         });
     }
 }

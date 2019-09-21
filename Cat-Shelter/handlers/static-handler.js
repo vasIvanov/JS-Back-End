@@ -11,7 +11,7 @@ function getContentType(url) {
     } else if (url.endsWith('html')) {
         return 'text/html';
     } else if (url.endsWith('ico')) {
-        return 'image/ico'
+        return 'image/png'
     } else if (url.endsWith('jpg')) {
         return 'image/jpg'
     } else if (url.endsWith('png')) {
