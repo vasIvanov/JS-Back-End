@@ -6,9 +6,9 @@ const formidable = require('formidable');
 const cats = require('../data/cats');
 const breeds = require('../data/breeds');
 
+
 module.exports = (req, res) => {
     const pathname = url.parse(req.url).pathname;
-    console.log(pathname);
     
     if(pathname === '/cats/add-cat' && req.method === 'GET') {
 
@@ -103,7 +103,6 @@ module.exports = (req, res) => {
                 if(err) throw err;
 
                 let allCats = JSON.parse(data);
-                console.log(cats.length);
                 
                 allCats.push({
                     id: cats.length + 1,
@@ -218,7 +217,6 @@ module.exports = (req, res) => {
     
                 let allCats = JSON.parse(data);
                 let catId = req.url.split('/')[2];
-                console.log(catId);
                 
                 let editedCat = {
                     id: +catId,
@@ -226,7 +224,6 @@ module.exports = (req, res) => {
                     image: files.upload.name
                 }
                 allCats[catId - 1] = editedCat;
-                console.log(allCats);
                 
                 let json = JSON.stringify(allCats);
                 fs.writeFile('./data/cats.json', json, () => {
@@ -235,5 +232,5 @@ module.exports = (req, res) => {
                 });
             });
         });
-    }
+    } 
 }
