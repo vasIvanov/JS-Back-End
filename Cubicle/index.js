@@ -1,4 +1,6 @@
 const env = process.env.NODE_ENV || 'development';
+global.__basedir = __dirname;
+const cubeModel = require('./models/cube');
 
 const config = require('./config/config')[env];
 const app = require('express')();
