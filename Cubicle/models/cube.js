@@ -20,8 +20,8 @@ class CubeModel {
         });
     }
 
-    create(name, description, imageUrl, diffifultyLevel) {
-        return { name, description, imageUrl, diffifultyLevel };
+    create(name, description, imageUrl, difficultyLevel) {
+        return { name, description, imageUrl, difficultyLevel };
     }
 
     insert(newCube) {
