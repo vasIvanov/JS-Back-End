@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Create Cube Page</title>
+  <title>Edit Cube Page</title>
   <link href="/css/site.css" type="text/css" rel="stylesheet">
   <link rel='shortcut icon' type='image/x-icon' href='/images/favicon.png' />
 </head>
@@ -19,9 +19,9 @@
       </ul>
     </header>
     <main>
-      <h1>Create</h1>
+      <h1>Edit</h1>
       <div class="form">
-        <form action='/create' method="PUT">
+        <form action='/edit/{{cube.id}}' method="POST">
           <label for="name">Name</label>
           <input type="text" id="name" name="name" value="{{cube.name}}">
           <label for="name">Description</label>

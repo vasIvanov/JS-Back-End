@@ -67,11 +67,28 @@ function edit(req, res) {
     const idEdit = +req.params.id;
 
     cubeModel.getOne(idEdit).then(cube => {
-        console.log(cube);
         
         res.render('edit.hbs', { cube });
     })
 
+}
+
+function postEdit(req, res) {
+    const id = +req.params.id
+    const {name, description, imageUrl, difficultyLevel} = req.body;
+    const updated = {
+        name,
+        description, 
+        imageUrl,
+        difficultyLevel: +difficultyLevel
+    }
+    console.log('before update');
+    
+    cubeModel.update(id, updated).then(() => {
+        console.log('after update');
+        
+        res.redirect('/');
+    })
 }
 
 function deleteCube(req, res) {
@@ -90,5 +107,6 @@ module.exports = {
     deleteCube,
     search,
     edit,
+    postEdit,
     notFound
 }
