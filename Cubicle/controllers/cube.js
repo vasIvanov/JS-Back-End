@@ -1,13 +1,20 @@
 const cubeModel = require('../models/cube');
 
-function index(req, res) {
+function index(req, res, next) {
     cubeModel.getAll().then(cubes => {
-        console.log(cubes);
-        console.log({cubes});
         res.render('index.hbs', { cubes })
-    })
+    }).catch(next); //error handler
+}
+
+function details(req, res, next) {
+    
+    const id = +req.params.id;
+    cubeModel.getOne(id).then(cube => {
+        res.render('details.hbs', { cube })
+    }).catch(next); //error handler
 }
 
 module.exports = {
-    index
+    index,
+    details
 }
