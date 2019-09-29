@@ -1,15 +1,13 @@
-module.export.get = function() {
-    
+const cubeModel = require('../models/cube');
+
+function index(req, res) {
+    cubeModel.getAll().then(cubes => {
+        console.log(cubes);
+        console.log({cubes});
+        res.render('index.hbs', { cubes })
+    })
 }
 
-module.export.post = function() {
-    
-}
-
-module.export.put = function() {
-    
-}
-
-module.export.delete = function() {
-    
+module.exports = {
+    index
 }
