@@ -1,6 +1,7 @@
 const cubeModel = require('../models/cube');
 
 function index(req, res, next) {
+   
     cubeModel.getAll().then(cubes => {
         res.render('index.hbs', { cubes })
         
@@ -35,6 +36,32 @@ function postCreate(req, res) {
     });
 }
 
+function search(req, res) {
+
+    const { from, to, search } = req.query;
+    const findFn = item => {
+        let result = true;
+        if(search) {
+            result = item.name.includes(search);
+        }
+        if(from && result) {
+            result = +item.difficultyLevel >= +from;
+        }
+        if(to && result) {
+            result = +item.difficultyLevel <= +to;
+        }
+        if(!search && !from && !to) {
+            result = false;
+        }
+        return result;
+    }
+
+    cubeModel.find(findFn).then(cubes => {
+        
+        res.render('index.hbs', { cubes });
+    })
+}
+
 function deleteCube(req, res) {
     const id = +req.params.id;
     cubeModel.delete(id).then(() => {
@@ -49,5 +76,6 @@ module.exports = {
     create,
     postCreate,
     deleteCube,
+    search,
     notFound
 }

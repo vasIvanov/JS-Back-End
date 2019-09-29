@@ -6,6 +6,7 @@ module.exports = (app) => {
     app.get('/create', controllers.create)
     app.post('/create', controllers.postCreate);
     app.get('/delete/:id', controllers.deleteCube);
+    app.get('/search', controllers.search);
     app.get('/', controllers.index);
     app.get('*', controllers.notFound);
 

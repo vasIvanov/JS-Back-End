@@ -62,8 +62,12 @@ class CubeModel {
         return this._write(newData, updatedEntity);
     }
 
+    find(predFn) {
+        return Promise.resolve(this.data.entities.filter(predFn));
+    }
+
     getOne(id) {
-        return Promise.resolve(this.data.entities.find(({ id: i }) => i === id));
+        return this.find(({ id: i }) => i === id);
     }
 
     getAll() {
