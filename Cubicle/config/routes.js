@@ -7,8 +7,8 @@ module.exports = (app) => {
     app.post('/create', controllers.postCreate);
     app.get('/delete/:id', controllers.deleteCube);
     app.get('/search', controllers.search);
+    app.get('/edit/:id', controllers.edit);
     app.get('/', controllers.index);
     app.get('*', controllers.notFound);
-
 
 };

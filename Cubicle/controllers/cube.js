@@ -12,7 +12,8 @@ function details(req, res, next) {
     
     const id = +req.params.id;
     cubeModel.getOne(id).then(cube => {
-        res.render('details.hbs', { cube })
+
+        res.render('details.hbs', {cube})
     }).catch(next); //error handler
 }
 
@@ -62,6 +63,17 @@ function search(req, res) {
     })
 }
 
+function edit(req, res) {
+    const idEdit = +req.params.id;
+
+    cubeModel.getOne(idEdit).then(cube => {
+        console.log(cube);
+        
+        res.render('edit.hbs', { cube });
+    })
+
+}
+
 function deleteCube(req, res) {
     const id = +req.params.id;
     cubeModel.delete(id).then(() => {
@@ -77,5 +89,6 @@ module.exports = {
     postCreate,
     deleteCube,
     search,
+    edit,
     notFound
 }
