@@ -15,9 +15,10 @@ function index(req, res, next) {
 
 function details(req, res, next) {
     
-    const id = +req.params.id;
-    cubeModel.getOne(id).then(cube => {
-
+    const id = req.params.id;
+    cubeModel.findOne({_id : id}).then(cube => {
+        console.log({cube});
+        
         res.render('details.hbs', {cube})
     }).catch(next); //error handler
 }
@@ -35,9 +36,10 @@ function create(req, res, next) {
 }
 
 function postCreate(req, res) {
-    const {name, description, imageUrl, difficultyLevel} = req.body;
-    const newCube = cubeModel.create(name, description, imageUrl, +difficultyLevel);
-    cubeModel.insert(newCube).then(() => {
+    const {name, description, imageUrl} = req.body;
+    const difficultyLevel = +req.body.difficultyLevel;
+    const newCube = {name, description, imageUrl, difficultyLevel};
+    cubeModel.insertMany(newCube).then(() => {
         res.redirect('/');
     });
 }
@@ -69,9 +71,9 @@ function search(req, res) {
 }
 
 function edit(req, res) {
-    const idEdit = +req.params.id;
+    const idEdit = req.params.id;
 
-    cubeModel.getOne(idEdit).then(cube => {
+    cubeModel.findOne({_id: idEdit}).then(cube => {
         
         res.render('edit.hbs', { cube });
     })
@@ -79,7 +81,7 @@ function edit(req, res) {
 }
 
 function postEdit(req, res) {
-    const id = +req.params.id
+    const id = req.params.id
     const {name, description, imageUrl, difficultyLevel} = req.body;
     const updated = {
         name,
@@ -87,18 +89,20 @@ function postEdit(req, res) {
         imageUrl,
         difficultyLevel: +difficultyLevel
     }
-    console.log('before update');
     
-    cubeModel.update(id, updated).then(() => {
-        console.log('after update');
+    cubeModel.findByIdAndUpdate(id, {$set: updated}).then((e) => {
+        console.log(e);
         
         res.redirect('/');
+    }).catch(e => {
+        console.log(e);
+        
     })
 }
 
 function deleteCube(req, res) {
-    const id = +req.params.id;
-    cubeModel.delete(id).then(() => {
+    const id = req.params.id;
+    cubeModel.deleteOne({_id: id}).then(() => {
         res.redirect('/');
     })
 }
