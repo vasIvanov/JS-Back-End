@@ -1,11 +1,41 @@
-const env = process.env.NODE_ENV || 'development';
 global.__basedir = __dirname;
-const cubeModel = require('./models/cube');
+const dbConnector = require('./config/db');
+dbConnector().then(() => {
+    const app = require('express')();
+    const config = require('./config/config');
+    
+    require('./config/express')(app);
+    require('./config/routes')(app);
+    
+    app.listen(config.port, console.log(`Listening on port ${config.port}! Now its up to you...`));
+    
+}).catch(err => {
+    console.error(err);
+    
+})  
 
-const config = require('./config/config')[env];
-const app = require('express')();
+// const dbUrl = 'mongodb://localhost:27017';
+// const { MongoClient } = require('mongodb');
+// const client = new MongoClient(dbUrl);
+// client.connect(function(err) {
+//     if(err) {
+//         console.error(err);
+//         return;
+//     }
 
-require('./config/express')(app);
-require('./config/routes')(app);
+//     const db = client.db('testdb');
+//     const users = db.collection('users');
+//     // users.deleteMany({ name: 'test' }).then(deleted => {
+//     //     console.log(deleted);
+        
+//     // })
+//     // users.insert({name: 'test'}).then(user => {
+//     //     console.log(user);
+        
+//     // })
+// })
 
-app.listen(config.port, console.log(`Listening on port ${config.port}! Now its up to you...`));
+
+
+
+

@@ -1,11 +1,16 @@
 const cubeModel = require('../models/cube');
 
 function index(req, res, next) {
-   
-    cubeModel.getAll().then(cubes => {
-        res.render('index.hbs', { cubes })
-        
-    }).catch(next); //error handler
+    // const { form, to, search } = req.query;
+    
+    cubeModel.find().then(cubes => {
+        res.render('index.hbs', { 
+            cubes,
+            // search,
+            // from,
+            // to
+        });
+    }).catch(next)
 }
 
 function details(req, res, next) {
