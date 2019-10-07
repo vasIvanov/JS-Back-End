@@ -2,15 +2,9 @@ const cubeModel = require('../models/cube');
 const accessoryModel = require('../models/accessory');
 
 function index(req, res, next) {
-    // const { from, to, search } = req.query;
     
     cubeModel.find().then(cubes => {
-        res.render('index.hbs', { 
-            cubes,
-            // search,
-            // from,
-            // to
-        });
+        res.render('index.hbs', { cubes });
     }).catch(next)
 }
 
@@ -46,22 +40,32 @@ function postCreate(req, res) {
     });
 }
 
-function searching(req, res) {
-    const { to, search } = req.query;
-    const from = +req.query.from;
-    cubeModel.find({}).where('name').equals(search).where('difficultyLevel').gt(from).then(cubes => {
-        res.render('index.hbs', { cubes });
-    })
+function searching(req, res, next) {
+    const { to, search, from } = req.query;
+    const flag = true;
+    let query = {};
+    if (search) {
+        query = { ...query, name: { $regex: search } };
+    }
+    if (to) {
+        query = { ...query, difficultyLevel: { $lte: +to } };
+    }
+    if (from) {
+        query = {
+            ...query,
+            difficultyLevel: { ...query.difficultyLevel, $gte: +from }
+        };
+    }
 
-    // const regex = new RegExp('/' + search + '/i') ;
-    
-    //     cubeModel.find({
-    //         name: regex,
-    //         difficultyLevel: {$gt: from}
-
-    //     }).then(cubes => {
-    //         res.render('index.hbs', { cubes });
-    //     })
+  cubeModel.find(query).then(cubes => {
+    res.render('index.hbs', {
+      cubes,
+      search,
+      from,
+      to,
+      flag
+    });
+  }).catch(next);
 }
 
 function edit(req, res) {
