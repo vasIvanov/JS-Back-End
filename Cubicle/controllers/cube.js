@@ -112,6 +112,21 @@ function postCreateAccessory(req, res) {
     });
 }
 
+function attachAccessory(req, res) {
+    const id = req.params.id;
+    const cube =  cubeModel.findOne({_id: id});
+    const accessories = accessoryModel.find({});
+
+    Promise.all([cube, accessories]).then((values) => {
+        const cube = values[0];
+        const accessories = values[1];
+        res.render('attachAccessory.hbs', {
+            cube,
+            accessories
+        });
+    });
+}
+
 module.exports = {
     index,
     details,
@@ -124,5 +139,6 @@ module.exports = {
     postEdit,
     notFound,
     createAccessory,
-    postCreateAccessory
+    postCreateAccessory,
+    attachAccessory
 }
