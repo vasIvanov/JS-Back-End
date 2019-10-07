@@ -1,7 +1,8 @@
 const cubeModel = require('../models/cube');
+const accessoryModel = require('../models/accessory');
 
 function index(req, res, next) {
-    // const { form, to, search } = req.query;
+    // const { from, to, search } = req.query;
     
     cubeModel.find().then(cubes => {
         res.render('index.hbs', { 
@@ -17,7 +18,6 @@ function details(req, res, next) {
     
     const id = req.params.id;
     cubeModel.findOne({_id : id}).then(cube => {
-        console.log({cube});
         
         res.render('details.hbs', {cube})
     }).catch(next); //error handler
@@ -44,30 +44,22 @@ function postCreate(req, res) {
     });
 }
 
-function search(req, res) {
-
-    const { from, to, search } = req.query;
-    const findFn = item => {
-        let result = true;
-        if(search) {
-            result = item.name.includes(search);
-        }
-        if(from && result) {
-            result = +item.difficultyLevel >= +from;
-        }
-        if(to && result) {
-            result = +item.difficultyLevel <= +to;
-        }
-        if(!search && !from && !to) {
-            result = false;
-        }
-        return result;
-    }
-
-    cubeModel.find(findFn).then(cubes => {
-        
+function searching(req, res) {
+    const { to, search } = req.query;
+    const from = +req.query.from;
+    cubeModel.find({}).where('name').equals(search).where('difficultyLevel').gt(from).then(cubes => {
         res.render('index.hbs', { cubes });
     })
+
+    // const regex = new RegExp('/' + search + '/i') ;
+    
+    //     cubeModel.find({
+    //         name: regex,
+    //         difficultyLevel: {$gt: from}
+
+    //     }).then(cubes => {
+    //         res.render('index.hbs', { cubes });
+    //     })
 }
 
 function edit(req, res) {
@@ -91,7 +83,6 @@ function postEdit(req, res) {
     }
     
     cubeModel.findByIdAndUpdate(id, {$set: updated}).then((e) => {
-        console.log(e);
         
         res.redirect('/');
     }).catch(e => {
@@ -107,6 +98,20 @@ function deleteCube(req, res) {
     })
 }
 
+function createAccessory(req, res) {
+    res.render('createAccessory.hbs');
+}
+
+function postCreateAccessory(req, res) {
+    const { name, description, imageUrl } = req.body;
+    const newAccessory = {name, description, imageUrl};
+    accessoryModel.insertMany(newAccessory).then(() => {
+        res.redirect('/');
+    }).catch(err => {
+        console.error(err);
+    });
+}
+
 module.exports = {
     index,
     details,
@@ -114,8 +119,10 @@ module.exports = {
     create,
     postCreate,
     deleteCube,
-    search,
+    searching,
     edit,
     postEdit,
-    notFound
+    notFound,
+    createAccessory,
+    postCreateAccessory
 }
