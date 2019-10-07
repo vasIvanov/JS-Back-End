@@ -18,8 +18,10 @@ function details(req, res, next) {
     
     const id = req.params.id;
     cubeModel.findOne({_id : id}).then(cube => {
-        
-        res.render('details.hbs', {cube})
+        Promise.all([cube, accessoryModel.find({ cubes: id })]).then(([cube, accessories]) => {
+            res.render('details.hbs', {cube, accessories})
+
+        })
     }).catch(next); //error handler
 }
 
@@ -98,34 +100,7 @@ function deleteCube(req, res) {
     })
 }
 
-function createAccessory(req, res) {
-    res.render('createAccessory.hbs');
-}
 
-function postCreateAccessory(req, res) {
-    const { name, description, imageUrl } = req.body;
-    const newAccessory = {name, description, imageUrl};
-    accessoryModel.insertMany(newAccessory).then(() => {
-        res.redirect('/');
-    }).catch(err => {
-        console.error(err);
-    });
-}
-
-function attachAccessory(req, res) {
-    const id = req.params.id;
-    const cube =  cubeModel.findOne({_id: id});
-    const accessories = accessoryModel.find({});
-
-    Promise.all([cube, accessories]).then((values) => {
-        const cube = values[0];
-        const accessories = values[1];
-        res.render('attachAccessory.hbs', {
-            cube,
-            accessories
-        });
-    });
-}
 
 module.exports = {
     index,
@@ -137,8 +112,5 @@ module.exports = {
     searching,
     edit,
     postEdit,
-    notFound,
-    createAccessory,
-    postCreateAccessory,
-    attachAccessory
+    notFound
 }
