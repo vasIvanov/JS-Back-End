@@ -6,7 +6,15 @@ function createToken(data) {
 }
 
 function verifyToken(token) {
-    return jwt.verify(token, secret)
+    return new Promise((resolve, reject) => {
+        jwt.verify(token, secret, (err, data) => {
+            if(err) {
+                reject(err);
+                return;
+            }     
+            resolve(data);
+        });
+    });
 }
 
 module.exports = {

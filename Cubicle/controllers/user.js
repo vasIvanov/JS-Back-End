@@ -1,6 +1,7 @@
 const userModel = require('../models/user');
 const jwt = require('../utils/jwt');
 const appConfig = require('../app-config');
+const tokenBlacklistModel =  require('../models/tokenBlacklist');
 
 function login(req, res) {
     res.render('loginPage.hbs');
@@ -48,7 +49,10 @@ function postRegister(req, res, next) {
 }
 
 function logout(req, res) {
-
+    const token = req.cookies[appConfig.authCookieName];
+    tokenBlacklistModel.create({ token }).then(() => {
+        res.clearCookie(appConfig.authCookieName).redirect('/');
+    });
 }
 
 module.exports = {
