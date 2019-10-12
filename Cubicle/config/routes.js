@@ -19,6 +19,9 @@ module.exports = (app) => {
     app.get('/create/accessory', accessoryControllers.createAccessory);
     app.post('/create/accessory', accessoryControllers.postCreateAccessory);
 
+    app.get('/delete/:id', cubeControllers.deleteCube);
+    app.post('/delete/:id', cubeControllers.postDelete);
+
     app.get('/attach/accessory/:id', accessoryControllers.attachAccessory);
     app.post('/attach/accessory/:id', accessoryControllers.postAttachAccessory)
 

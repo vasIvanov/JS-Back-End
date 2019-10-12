@@ -72,8 +72,8 @@ function edit(req, res) {
     const idEdit = req.params.id;
 
     cubeModel.findOne({_id: idEdit}).then(cube => {
-        
-        res.render('edit.hbs', { cube });
+        const levelString = cubeDifficulties(cube.difficultyLevel);
+        res.render('edit.hbs', { cube, levelString });
     })
 
 }
@@ -99,6 +99,26 @@ function postEdit(req, res) {
 
 function deleteCube(req, res) {
     const id = req.params.id;
+    cubeModel.findOne({ _id: id }).then(cube => {
+        const levelString = cubeDifficulties(cube.difficultyLevel);
+        res.render('deleteCubePage.hbs', {cube, levelString})
+    });
+}
+
+function cubeDifficulties(level) {
+    const difficulties = {
+        1: 'Very Easy',
+        2: 'Easy',
+        3: 'Medium (Standard 3x3)',
+        4: 'Intermediate',
+        5: 'Expert',
+        6: 'Hardcore'
+    }
+    return difficulties[level];
+}
+
+function postDelete(req, res) {
+    const id = req.params.id;
     cubeModel.deleteOne({_id: id}).then(() => {
         res.redirect('/');
     })
@@ -113,8 +133,9 @@ module.exports = {
     create,
     postCreate,
     deleteCube,
+    postDelete,
     searching,
     edit,
     postEdit,
-    notFound
+    notFound,
 }
