@@ -1,12 +1,23 @@
 const userModel = require('../models/user');
-
+const jwt = require('../utils/jwt');
+const appConfig = require('../app-config');
 
 function login(req, res) {
     res.render('loginPage.hbs');
 }
 
-function postLogin(req, res) {
-
+function postLogin(req, res, next) {
+    const { username, password } = req.body;
+    userModel.findOne({username})
+        .then(user => Promise.all([user, user.matchPassword(password)]))
+        .then(([user, match]) => {
+            if(!match) {
+                res.render('login.hbs', {message: 'Wrong password or username'});
+                return;
+            }
+            const token = jwt.createToken({id: user._id});
+            res.cookie(appConfig.authCookieName, token).redirect('/');
+        })
 }
 
 function register(req, res) {

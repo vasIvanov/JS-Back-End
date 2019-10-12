@@ -1,14 +1,15 @@
 const cubeControllers = require('../controllers/cube');
 const accessoryControllers = require('../controllers/accessory');
 const userController = require('../controllers/user');
+const {auth} = require('../utils/auth');
 
 module.exports = (app) => {
     app.get('/details/:id', cubeControllers.details);
 
     app.get('/about', cubeControllers.about);
 
-    app.get('/create', cubeControllers.create)
-    app.post('/create', cubeControllers.postCreate);
+    app.get('/create', auth, cubeControllers.create)
+    app.post('/create', auth, cubeControllers.postCreate);
 
     app.get('/delete/:id', cubeControllers.deleteCube);
 

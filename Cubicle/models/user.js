@@ -6,6 +6,13 @@ const userSchema = new mongoose.Schema({
     username: {type: String, unique: true},
     password: String
 });
+
+userSchema.methods = {
+    matchPassword: function(password) {
+        return bcrypt.compare(password, this.password);
+    }
+}
+
   
 userSchema.pre('save', function(next) {
     if(this.isModified('password')) {
