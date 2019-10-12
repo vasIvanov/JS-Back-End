@@ -27,8 +27,12 @@ module.exports = (app) => {
     app.post('/attach/accessory/:id', accessoryControllers.postAttachAccessory);
 
     app.get('/login', userController.login);
+    app.post('/login', userController.postLogin);
 
     app.get('/register', userController.register);
+    app.post('/register', userController.postRegister);
+
+    app.get('/logout', userController.logout);
 
     app.get('/', cubeControllers.index);
     app.get('*', cubeControllers.notFound);
