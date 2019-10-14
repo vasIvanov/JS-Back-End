@@ -15,11 +15,14 @@
         <li><img class="logo" src="/images/logo.png"></li>
         <li><a href="/">Browse</a></li>
         <li><a href="/about">About</a></li>
+        {{#if user}}
         <li><a href="/create">Add a Cube</a></li>
         <li><a href="/create/accessory">Add Accessory</a></li>
         <li><a href="/logout">Logout</a></li>
+        {{else}}
         <li><a href="/login">Login</a></li>
         <li><a href="/register">Resgister</a></li>
+        {{/if}}
       </ul>
     </header>
     <main>
@@ -37,7 +40,9 @@
         <p class="name">{{this.name}}</p>
         <p><span>Difficulty level:</span>{{this.difficultyLevel}}</p>
         <a class="btn" href="/details/{{this.id}}">Details</a>
+        {{#if this.creator}}
         <a class="btn" href="/attach/accessory/{{this.id}}">Attach</a>
+        {{/if}}
       </div>
       {{/each}}
     </main>

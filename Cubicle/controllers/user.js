@@ -18,6 +18,8 @@ function postLogin(req, res, next) {
             }
             const token = jwt.createToken({id: user._id});
             res.cookie(appConfig.authCookieName, token).redirect('/');
+        }).catch(err => {
+            res.redirect('/login');
         })
 }
 

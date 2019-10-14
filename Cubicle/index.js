@@ -6,6 +6,11 @@ dbConnector().then(() => {
     
     require('./config/express')(app);
     require('./config/routes')(app);
+
+    // setInterval(() => {
+    //     console.log('interval');
+        
+    // }, 1000);
     
     app.listen(config.port, console.log(`Listening on port ${config.port}! Now its up to you...`));
     
