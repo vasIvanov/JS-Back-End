@@ -13,7 +13,7 @@ const cubeSchema = new mongoose.Schema({
     },
     description: {
         type: String, 
-        minlength: 5,
+        minlength: [5, 'Description must be 5 chars or longer'],
         validate: {
             validator: function(v){
                 return /^[a-zA-z0-9 ]+$/.test(v);

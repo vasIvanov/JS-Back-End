@@ -1,5 +1,6 @@
 const cubeModel = require('../models/cube');
 const accessoryModel = require('../models/accessory');
+const { validationResult } = require('express-validator');
 
 function index(req, res, next) {
     const user = req.user;
@@ -48,8 +49,24 @@ function postCreate(req, res) {
     const difficultyLevel = +req.body.difficultyLevel;
     const creatorId = req.user.id;
     const newCube = {name, description, imageUrl, difficultyLevel, creatorId};
-    cubeModel.insertMany(newCube).then(() => {
-        res.redirect('/');
+    let result;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      result = Promise.reject({ name: 'ValidationError', errors: errors.errors });
+    } else {
+      result = cubeModel.insertMany(newCube);
+    }
+
+    return result.then(() => {
+      res.redirect('/');
+    }).catch(err => {
+      if (err.name === 'ValidationError') {
+        res.render('create.hbs', {
+          errors: err.errors
+        });
+        return;
+      }
+      next(err);
     });
 }
 
