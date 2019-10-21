@@ -19,6 +19,15 @@
         <li><a href="/register">Resgister</a></li>
       </ul>
     </header>
+    {{#if message}}
+    <div id="notifications">
+      <p id="notification-message">
+        
+        {{message}}
+        
+      </p>
+    </div>
+    {{/if}}
     <main>
 	<h1>Login Form</h1>
 <div class="form">
