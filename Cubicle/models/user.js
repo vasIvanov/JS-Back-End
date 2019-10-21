@@ -3,8 +3,27 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const userSchema = new mongoose.Schema({
-    username: {type: String, unique: true},
-    password: String
+    username: {
+        type: String,
+        unique: true, 
+        minlength: [5, 'Username must be 5 or longer'],
+        validate: {
+            validator: function(v){
+                return /^[a-zA-z0-9]+$/.test(v);
+            },
+            message: props => `${props.value} is not a valid username!`
+        },
+    },
+    password: {
+        type: String, 
+        minlength: [5, 'Password must be 5 or longer'],
+        validate: {
+            validator: function(v){
+                return /^[a-zA-z0-9]+$/.test(v);
+            },
+            message: props => `Invalid Password!`
+        },
+    }
 });
 
 userSchema.methods = {

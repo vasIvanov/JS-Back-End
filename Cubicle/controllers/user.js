@@ -2,6 +2,7 @@ const userModel = require('../models/user');
 const jwt = require('../utils/jwt');
 const appConfig = require('../app-config');
 const tokenBlacklistModel =  require('../models/tokenBlacklist');
+const { validationResult } = require('express-validator');
 
 function login(req, res) {
     res.render('loginPage.hbs');
@@ -13,13 +14,13 @@ function postLogin(req, res, next) {
         .then(user => Promise.all([user, user.matchPassword(password)]))
         .then(([user, match]) => {
             if(!match) {
-                res.render('login.hbs', {message: 'Wrong password or username'});
+                res.render('loginPage.hbs', {message: 'Wrong password or username'});
                 return;
             }
             const token = jwt.createToken({id: user._id});
             res.cookie(appConfig.authCookieName, token).redirect('/');
         }).catch(err => {
-            res.redirect('/login');
+            res.render('loginPage.hbs', {message: 'Wrong password or username'});
         })
 }
 
@@ -34,19 +35,24 @@ function postRegister(req, res, next) {
         return;
     }
 
-    
-    return userModel.create({username, password}).then(() => {
-        res.redirect('/login')
+    let result;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      result = Promise.reject({ name: 'ValidationError', errors: errors.errors });
+    } else {
+      result = userModel.create({ username, password });
+    }
+
+    return result.then(() => {
+      res.redirect('/login');
     }).catch(err => {
-        if(err.name === 'MongoError' && err.code === 11000) {
-            res.render('registerPage.hbs', {
-                errors: {
-                    username: 'Username already taken'
-                }
-            });
-            return;
-        }
-        next(err);
+      if (err.name === 'ValidationError') {
+        res.render('registerPage.hbs', {
+          errors: err.errors
+        });
+        return;
+      }
+      next(err);
     });
 }
 

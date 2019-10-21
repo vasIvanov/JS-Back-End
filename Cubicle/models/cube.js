@@ -2,9 +2,34 @@ const mongoose = require('mongoose');
 
 
 const cubeSchema = new mongoose.Schema({
-    name: String,
-    description: String,
-    imageUrl: String,
+    name: {
+        type: String,
+        validate: {
+            validator: function(v){
+                return /^[a-zA-z0-9 ]+$/.test(v);
+            },
+            message: props => `${props.value} is not a valid name!`
+        },
+    },
+    description: {
+        type: String, 
+        minlength: 5,
+        validate: {
+            validator: function(v){
+                return /^[a-zA-z0-9 ]+$/.test(v);
+            },
+            message: props => `${props.value} is not a valid description!`
+        },
+    },
+    imageUrl: {
+        type: String,
+        validate: {
+            validator: function(v){
+                return v.startsWith('http://') || v.startsWith('https://');
+            },
+            message: props => `Invalid image url!`
+        },
+    },
     difficultyLevel: Number,
     accessories: [{ type: mongoose.Schema.Types.ObjectId, ref: "Accessory"}],
     creatorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
