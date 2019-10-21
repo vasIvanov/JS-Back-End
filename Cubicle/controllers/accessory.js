@@ -1,5 +1,6 @@
 const accessoryModel = require('../models/accessory');
 const cubeModel = require('../models/cube');
+const { validationResult } = require('express-validator');
 
 function createAccessory(req, res) {
     res.render('createAccessory.hbs');
@@ -8,10 +9,25 @@ function createAccessory(req, res) {
 function postCreateAccessory(req, res) {
     const { name, description, imageUrl } = req.body;
     const newAccessory = {name, description, imageUrl};
-    accessoryModel.insertMany(newAccessory).then(() => {
-        res.redirect('/');
+
+    let result;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      result = Promise.reject({ name: 'ValidationError', errors: errors.errors });
+    } else {
+      result = accessoryModel.insertMany(newAccessory);
+    }
+
+    return result.then(() => {
+      res.redirect('/');
     }).catch(err => {
-        console.error(err);
+      if (err.name === 'ValidationError') {
+        res.render('createAccessory.hbs', {
+          errors: err.errors
+        });
+        return;
+      }
+      next(err);
     });
 }
 

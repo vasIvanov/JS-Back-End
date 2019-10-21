@@ -20,6 +20,30 @@
                 <li><a href="/logout">Logout</a></li>
             </ul>
         </header>
+        {{#if errors.name}}
+        <div id="notifications">
+            <p id="notification-message">
+            {{errors.name.message}}
+            </p>
+        </div>
+        {{/if}}
+        {{#if errors.description}}
+        <div id="notifications">
+            <p id="notification-message">
+            {{errors.description.message}}
+            </p>
+        </div>
+        {{/if}}
+        {{#if errors.imageUrl}}
+        <div id="notifications">
+            <p id="notification-message">
+            {{errors.imageUrl.message}}
+            </p>
+        </div>
+        {{/if}}
+
+
+        
         <main>
             <h1>Create Accessory</h1>
             <div class="form">
