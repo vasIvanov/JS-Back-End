@@ -118,13 +118,19 @@ function postEdit(req, res) {
         difficultyLevel: +difficultyLevel
     }
     
-    cubeModel.findByIdAndUpdate(id, {$set: updated}).then((e) => {
-        
+
+    cubeModel.updateOne({ _id: id }, updated, { runValidators: true }).then(cube => {
         res.redirect('/');
-    }).catch(e => {
-        console.log(e);
-        
-    })
+      }).catch(err => {
+        if (err.name === 'ValidationError') {
+          res.render('edit.hbs', {
+            errors: err.errors
+          });
+          return;
+        }
+        next(err);
+      });
+
 }
 
 function deleteCube(req, res) {
