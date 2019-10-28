@@ -15,38 +15,38 @@
             </div>
 
             <nav>
-                <a href="index.html">Main Page</a>
-                <a href="article.html">Latest Article</a>
-                <a href="all-articles.html">All Articles</a>
-                <form>
-                    <input type="text">
+                <a href="/">Main Page</a>
+                <a href="/all-articles">All Articles</a>
+                <form method="GET" action="/search">
+                    <input type="text" name="searched">
                     <input type="submit" value="Search">
                 </form>
-                <a href="create.html">Create New Article</a>
+                {{#if user}}
+                <a href="/create">Create New Article</a>
+                {{/if}}
             </nav>
         </aside>
         <div id="container">
             <header>
-                <a href="login.html">Login</a>
-                <a href="register.html">Register</a>
-                <span>Welcome, Pesho!</span>
-                <a href="#">[Logout]</a>
+               {{#if user}}
+                <span>Welcome, {{user.username}}!</span>
+                <a href="/logout">[Logout]</a>
+                {{else}}
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+                {{/if}}
             </header>
             <main>
                 <h1>Welcome to SoftUni Wiki!</h1>
                 <section>
-                    <h2>Search results for: "planet"</h2>
+                    <h2>Search results for: "{{searched}}"</h2>
                     <div class="spacer">
                         <ul>
+                            {{#each matches}}
                             <li>
-                                <a href="article.html">Planet</a>
+                                <a href="/article/{{this.id}}">{{ this.title }}</a>
                             </li>
-                            <li>
-                                <a href="article.html">Planet Of The Apes</a>
-                            </li>
-                            <li>
-                                <a href="article.html">Planet X</a>
-                            </li>
+                           {{/each}}
                         </ul>
                     </div>
                 </section>

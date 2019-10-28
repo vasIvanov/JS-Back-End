@@ -24,5 +24,7 @@ module.exports = (app) => {
 
     app.get('/delete/:id', auth(), articleController.get.delete);
 
+    app.get('/search', auth(false), articleController.get.search);
+
     app.get('/', auth(false), homeController.get.home);
 };

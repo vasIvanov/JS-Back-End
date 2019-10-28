@@ -19,7 +19,11 @@ module.exports = {
             const user = req.user;
             
             articleModel.findOne({ _id: id }).then(article => {
-                let author = article.author.toString() === user.id;
+                let author;
+                if(user){
+                    author = article.author.toString() === user.id;
+
+                }
 
                 res.render('article.hbs', { article, user, author });
             });
@@ -36,7 +40,18 @@ module.exports = {
             articleModel.deleteOne({_id: id}).then(() => {
                 res.redirect('/');
             })
+        },
+        search: function(req, res) {
+            const { searched } = req.query;
+            const user = req.user;
+            const query = {
+                title: { $regex: searched }
+            };
+            articleModel.find(query).then(matches => {
+                res.render('search-results.hbs', { matches, searched, user })
+            })
         }
+       
     },
 
     post: {
@@ -84,7 +99,6 @@ module.exports = {
                     return;
                 }
             });
-        },
-       
+        }
     }
 }
