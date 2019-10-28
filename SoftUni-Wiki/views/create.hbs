@@ -15,7 +15,7 @@
             </div>
 
             <nav>
-                <<a href="/">Main Page</a>
+                <a href="/">Main Page</a>
                 <a href="/all-articles">All Articles</a>
                 <form>
                     <input type="text">
@@ -33,17 +33,25 @@
             </header>
             <main>
                 <h1>Welcome to SoftUni Wiki!</h1>
+                {{#if erros.title}}
 				<section id="notifications">
-				<p>Article description should be at least 20 characters long...</p>
+				<p>{{ errors.title.message }}</p>
 				</section>
+                {{/if}}
+                {{#if erros.description}}
+				<section id="notifications">
+				<p>{{ errors.description.message }}</p>
+				</section>
+                {{/if}}
+
                 <section>
                     <h2>Create new article</h2>
                     <div class="spacer">
-                        <form>
-                            <label>Article title</label>
-                            <input type="text" class="title">
-                            <label>Content</label>
-                            <textarea></textarea>
+                        <form method="POST" action="/create">
+                            <label for="title">Article title</label>
+                            <input name="title" type="text" class="title">
+                            <label for="description">Content</label>
+                            <textarea id="description" name="description"></textarea>
                             <input type="submit" value="Submit">
                         </form>
                     </div>
