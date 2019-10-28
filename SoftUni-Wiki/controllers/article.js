@@ -4,20 +4,22 @@ const { validationResult } = require('express-validator');
 module.exports = {
     get: {
         create: function(req, res) {
-            res.render('create.hbs');
+            const user = req.user
+            res.render('create.hbs', { user } );
         },
         allArticles: function(req, res) {
+            const user = req.user;
             articleModel.find().then(articles => {
                 
-                res.render('all-articles.hbs', { articles });
+                res.render('all-articles.hbs', { articles, user });
             });
         },
         article: function(req, res) {
             const id = req.params.id;
+            const user = req.user;
             articleModel.findOne({ _id: id }).then(article => {
-                console.log({ article });
                 
-                res.render('article.hbs', { article });
+                res.render('article.hbs', { article, user });
             })
         }
     },

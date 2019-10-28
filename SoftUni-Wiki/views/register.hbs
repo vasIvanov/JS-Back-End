@@ -21,22 +21,37 @@
                     <input type="text">
                     <input type="submit" value="Search">
                 </form>
-                <a href="">Create New Article</a>
             </nav>
         </aside>
         <div id="container">
             <header>
                 <a href="/login">Login</a>
                 <a href="/register">Register</a>
-                <span>Welcome, Pesho!</span>
-                <a href="/logout">[Logout]</a>
             </header>
             <main>
                 <h1>Welcome to SoftUni Wiki!</h1>
+                {{#if errors.username}}
 				<section id="notifications">
-				<p>Both passwords should be the same...</p>
+				<p>{{errors.username}}</p>
 				</section>
+                {{/if}}
                 <section>
+
+                {{#if errors.password}}
+                <section id="notifications">
+                <p>
+                    {{errors.password}}
+                </p>
+                </section>
+                {{/if}}
+
+                {{#if errors.repeatPassword}}
+                <section id="notifications">
+                <p>
+                    {{errors.repeatPassword}}
+                </p>
+                </section>
+                {{/if}}
                     <h2>Register</h2>
                     <div class="spacer">
                         <form method="POST" action="/register">

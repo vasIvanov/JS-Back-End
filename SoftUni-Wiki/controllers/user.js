@@ -33,7 +33,7 @@ module.exports = {
               res.render('login.hbs', {message: 'Wrong password or username'});
           })
     },
-    register: function(req, res) {
+    register: function(req, res, next) {
       const { username, password, repeatPassword } = req.body;
       if(password !== repeatPassword) {
           res.render('register.hbs', { errors: {repeatPassword: 'Passwords dont match'}});

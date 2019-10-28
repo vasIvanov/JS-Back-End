@@ -21,24 +21,31 @@
                     <input type="text">
                     <input type="submit" value="Search">
                 </form>
-                <a href="">Create New Article</a>
+                {{#if user}}
+                <a href="/create">Create New Article</a>
+                {{/if}}
             </nav>
         </aside>
         <div id="container">
             <header>
+               {{#if user}}
+                <span>Welcome, {{ user.username }}!</span>
+                <a href="/logout">[Logout]</a>
+                {{else}}
                 <a href="/login">Login</a>
                 <a href="/register">Register</a>
-                <span>Welcome, Pesho!</span>
-                <a href="/logout">[Logout]</a>
+                {{/if}}
             </header>
             <main>
                 <h1>Welcome to SoftUni Wiki!</h1>
                 <div class="spacer">
                     <h2>{{article.title}}
+                        {{#if author}}
                         <div class="controls">
                             <a href="edit.html">[edit]</a>
                             <a href="history.html">[delete]</a>
                         </div>
+                        {{/if}}
                     </h2>
                     <article>
                         <p>

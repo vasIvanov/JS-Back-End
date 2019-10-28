@@ -21,16 +21,22 @@
                     <input type="text">
                     <input type="submit" value="Search">
                 </form>
-                <a href="">Create New Article</a>
             </nav>
         </aside>
         <div id="container">
             <header>
                <a href="/login">Login</a>
                 <a href="/register">Register</a>
-                <span>Welcome, Pesho!</span>
-                <a href="/logout">[Logout]</a>
             </header>
+            {{#if message}}
+            <section id="notifications">
+            <p>
+                
+                {{message}}
+                
+            </p>
+            </section>
+            {{/if}}
             <main>
                 <h1>Welcome to SoftUni Wiki!</h1>
                 <section>
