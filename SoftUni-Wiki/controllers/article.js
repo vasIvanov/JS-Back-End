@@ -17,9 +17,24 @@ module.exports = {
         article: function(req, res) {
             const id = req.params.id;
             const user = req.user;
+            
             articleModel.findOne({ _id: id }).then(article => {
-                
-                res.render('article.hbs', { article, user });
+                let author = article.author.toString() === user.id;
+
+                res.render('article.hbs', { article, user, author });
+            });
+        },
+        edit: function(req, res) {
+            const id = req.params.id;
+            const user = req.user;
+            articleModel.findOne({ _id: id }).then(article => {
+                res.render('edit.hbs', {article, user});
+            })
+        },
+        delete: function(req, res) {
+            const id = req.params.id;
+            articleModel.deleteOne({_id: id}).then(() => {
+                res.redirect('/');
             })
         }
     },
@@ -51,6 +66,25 @@ module.exports = {
               }
               next(err);
             });
-        }
+        },
+        edit: function(req, res) {
+            const id = req.params.id;
+            const { description } = req.body;
+            const updated = {
+                description
+            };
+
+            articleModel.updateOne({ _id: id }, updated, { runValidators: true }).then(article => {
+                res.redirect('/');
+            }).catch(err => {
+                if(err.name === 'ValidationError') {
+                    res.render('edit.hbs', {
+                        errors: err.errors
+                    });
+                    return;
+                }
+            });
+        },
+       
     }
 }

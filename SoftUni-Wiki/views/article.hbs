@@ -42,8 +42,8 @@
                     <h2>{{article.title}}
                         {{#if author}}
                         <div class="controls">
-                            <a href="edit.html">[edit]</a>
-                            <a href="history.html">[delete]</a>
+                            <a href="/edit/{{ article.id }}">[edit]</a>
+                            <a href="/delete/{{ article.id }}">[delete]</a>
                         </div>
                         {{/if}}
                     </h2>

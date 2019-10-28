@@ -19,5 +19,10 @@ module.exports = (app) => {
 
     app.get('/article/:id', auth(false), articleController.get.article);
 
+    app.get('/edit/:id', auth(), articleController.get.edit);
+    app.post('/edit/:id', auth(), articleController.post.edit);
+
+    app.get('/delete/:id', auth(), articleController.get.delete);
+
     app.get('/', auth(false), homeController.get.home);
 };
