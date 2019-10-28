@@ -12,10 +12,7 @@ module.exports = {
       res.render('register.hbs');
     },
     logout: function(req, res) {
-      const token = req.cookies[appConfig.authCookieName];
-      tokenBlacklistModel.create({ token }).then(() => {
-          res.clearCookie(appConfig.authCookieName).redirect('/');
-      });
+      res.clearCookie(appConfig.authCookieName).redirect('/');
     }
   },
 

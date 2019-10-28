@@ -1,7 +1,8 @@
 module.exports = {
     get: {
         home: function(req, res) {
-            res.render('index.hbs');
+            const user = req.user;
+            res.render('index.hbs', { user });
         } 
     }
 }
