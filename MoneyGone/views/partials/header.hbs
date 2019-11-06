@@ -7,7 +7,12 @@
         </ul>
         <ul>
             <li>
+                {{#if isLogged}}
+                <a class="right-floated" href="#">[{{username}}]</a>
+                <a class="right-floated" href="/logout">Logout</a>
+                {{else}}
                 <a class="right-floated" href="/login">Login</a>
+                {{/if}}
             </li>
         </ul>
     </nav>

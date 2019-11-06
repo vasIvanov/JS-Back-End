@@ -28,6 +28,7 @@ module.exports = {
                   return;
               }
               const token = jwt.createToken({id: user._id});
+              res.cookie('username', user.username);
               res.cookie(appConfig.authCookieName, token).redirect('/');
           }).catch(err => {
               res.render('login.hbs', {message: 'Wrong password or username'});
