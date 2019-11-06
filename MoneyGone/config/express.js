@@ -19,6 +19,7 @@ module.exports = (app) => {
     app.use((req, res, next) => {
         res.locals.isLogged = req.cookies[authCookieName] !== undefined;
         res.locals.username = req.cookies['username'];
+        res.locals.userId = req.cookies['userId'];
         next();
     })
     app.set('view engine', 'hbs');

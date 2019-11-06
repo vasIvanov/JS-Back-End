@@ -2,6 +2,7 @@ const userModel = require('../models/user');
 const jwt = require('../utils/jwt');
 const appConfig = require('../app-config');
 const { validationResult } = require('express-validator');
+const expenseModel = require('../models/expense');
 
 module.exports = {
   get: {
@@ -13,6 +14,21 @@ module.exports = {
     },
     logout: function(req, res) {
       res.clearCookie(appConfig.authCookieName).redirect('/');
+    },
+    profile: function(req, res) {
+      expenseModel.find().then((allExpenses) => {
+        const user = req.user;
+        const expenses = allExpenses.filter(e => e.user.toString() === req.user.id);
+        let totalAmount = 0;
+        let totalMerches = 0;
+        for (let expense of expenses) {
+          totalAmount += expense.total;
+          totalMerches++;
+        }
+        res.render('account-info.hbs', { user, totalAmount, totalMerches });
+
+    })
+     
     }
   },
 
@@ -28,6 +44,7 @@ module.exports = {
                   return;
               }
               const token = jwt.createToken({id: user._id});
+              res.cookie('userId', user.id);
               res.cookie('username', user.username);
               res.cookie(appConfig.authCookieName, token).redirect('/');
           }).catch(err => {
