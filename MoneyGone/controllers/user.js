@@ -60,6 +60,14 @@ module.exports = {
         }
         next(err);
       });
+    },
+    refil: function(req, res) {
+      const id = req.user.id;
+      const refil = +req.body.refil;
+      req.user.amount += refil;
+      userModel.findByIdAndUpdate({ _id: id }, req.user).then(() => {
+        res.redirect('/');
+      })
     }
   }
 }

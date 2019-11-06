@@ -17,6 +17,8 @@ module.exports = (app) => {
 
     app.get('/report/:id', auth(), expenseController.get.report);
 
+    app.post('/refil', auth(), userController.post.refil);
+
     app.get('/delete/:id', auth(), expenseController.get.delete);
 
     app.get('/', auth(false), homeController.get.home);
