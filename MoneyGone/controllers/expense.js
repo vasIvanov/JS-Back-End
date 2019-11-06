@@ -6,6 +6,18 @@ module.exports = {
     get: {
         addExpense: function(req, res) {
             res.render('new-expense.hbs');
+        },
+        report: function(req, res) {
+            const id = req.params.id
+            expenseModel.findOne({ _id: id }).then((expense) => {
+                res.render('report.hbs', { expense });
+            });
+        },
+        delete: function(req, res) {
+            const id = req.params.id;
+            expenseModel.findByIdAndRemove({ _id: id }).then(() => {
+                res.redirect('/')
+            })
         }
     },
     post: {

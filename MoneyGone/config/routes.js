@@ -15,6 +15,10 @@ module.exports = (app) => {
     app.get('/new-expense', auth(), expenseController.get.addExpense);
     app.post('/new-expense', auth(), expenseController.post.addExpense);
 
+    app.get('/report/:id', auth(), expenseController.get.report);
+
+    app.get('/delete/:id', auth(), expenseController.get.delete);
+
     app.get('/', auth(false), homeController.get.home);
 
     app.get('*', homeController.get.notFound);

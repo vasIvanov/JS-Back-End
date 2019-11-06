@@ -1,26 +1,26 @@
 <section class="expense-report">
 
-    <h1>ID: 192387048</h1>
+    <h1>ID: {{ expense.id }}</h1>
     <div class="report-date">
-        <img src="static/images/date.png" alt="">
-        <p>October 26, 2019</p>
+        <img src="/images/date.png" alt="">
+        <p>{{ expense.date }}</p>
     </div>
 
     <div class="report-category">
-        <img src="static/images/amount.png" alt="">
-        <p>Equipment - лв 123.00</p>
+        <img src="/images/amount.png" alt="">
+        <p>{{ expense.category }} - {{ expense.vault }} {{ expense.total }}</p>
     </div>
 
     <div class="report-merchant">
-        <p>Car supplies</p>
+        <p>{{ expense.merchant }}</p>
     </div>
 
     <div class="report-description">
-        <img src="static/images/hastag.png" alt="">
-        <p>Deeeeeeeeeeeeeeeeeeeeeeeeeeeescription</p>
+        <img src="/images/hastag.png" alt="">
+        <p>{{ expense.description }}</p>
     </div>
 
     <div class="report-action">
-        <a disabled href="#">Stop tracking</a>
+        <a disabled href="/delete/{{ expense.id }}">Stop tracking</a>
     </div>
 </section>
