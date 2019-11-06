@@ -6,8 +6,7 @@ const expenseSchema = new mongoose.Schema({
         required: true
     },
     date: {
-        type: mongoose.Schema.Types.Date,
-        default: Date.now()
+        type: String,
     },
     total: {
         type: mongoose.Schema.Types.Number,
@@ -30,6 +29,9 @@ const expenseSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
+    },
+    vault: {
+        type: String
     }
 
 });

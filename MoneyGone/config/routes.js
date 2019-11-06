@@ -1,5 +1,6 @@
 const userController = require('../controllers/user');
 const homeController = require('../controllers/home');
+const expenseController = require('../controllers/expense');
 const {auth} = require('../utils/auth');
 
 module.exports = (app) => {
@@ -11,6 +12,10 @@ module.exports = (app) => {
 
     app.get('/logout', userController.get.logout);
 
+    app.get('/new-expense', auth(), expenseController.get.addExpense);
+    app.post('/new-expense', auth(), expenseController.post.addExpense);
 
     app.get('/', auth(false), homeController.get.home);
+
+    app.get('*', homeController.get.notFound);
 };

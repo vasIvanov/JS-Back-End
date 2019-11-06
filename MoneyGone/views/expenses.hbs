@@ -11,7 +11,7 @@
 </section>
 
 <hr class="separator">
-
+{{#if expenses}}
 <table class="expenses">
     <thead>
         <tr>
@@ -24,77 +24,36 @@
 
     </thead>
     <tbody>
+        {{#each expenses}}
         <tr>
             <td>
                 <img src="/images/date.png" />
-                <p>October 25</p>
+                <p>{{ this.date }}</p>
             </td>
             <td>
-                <p>Shoes</p>
+                <p>{{ this.merchant }}</p>
+            {{#if this.report}}
                 <div class="report">
                     <a href="/report">Report</a>
                 </div>
             </td>
+            {{/if}}
             <td>
                 <img src="/images/amount.png" alt="">
-                <p>лв 123.00</p>
+                <p>{{ this.vault }} {{this.total}}</p>
             </td>
             <td>
                 <img src="/images/category.png" alt="">
-                <p>Other</p>
+                <p>{{ this.category }}</p>
             </td>
             <td>
                 <img src="/images/hastag.png" alt="">
-                <p>I fucked up...</p>
+                <p>{{ this.description }}</p>
             </td>
         </tr>
-        <tr>
-            <td>
-                <img src="/images/date.png" />
-                <p>October 26</p>
-            </td>
-            <td>
-                <p>Car supplies</p>
-                <div class="report">
-                    <a href="/report">Report</a>
-                </div>
-            </td>
-            <td>
-                <img src="static/images/amount.png" alt="">
-                <p>лв <span>123.00</span></p>
-            </td>
-            <td>
-                <img src="static/images/category.png" alt="">
-                <p>Car</p>
-            </td>
-            <td>
-                <img src="static/images/hastag.png" alt="">
-                <p>Regular car stuff....</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <img src="static/images/date.png" />
-                <p>October 25</p>
-            </td>
-            <td>
-                <p>Shoes</p>
-            </td>
-            <td>
-                <img src="static/images/amount.png" alt="">
-                <p>лв 123.00</p>
-            </td>
-            <td>
-                <img src="static/images/category.png" alt="">
-                <p>Other</p>
-            </td>
-            <td>
-                <img src="static/images/hastag.png" alt="">
-                <p>Gift to my girl...</p>
-            </td>
-        </tr>
-
+        {{/each}}
     </tbody>
 </table>
-
+{{else}}
 <h1 class="no-expenses">No expenses founded so far.. <span>GOOD JOB!</span></h1>
+{{/if}}

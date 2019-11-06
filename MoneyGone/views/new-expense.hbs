@@ -1,14 +1,14 @@
-<form>
+<form method="POST" action="/new-expense">
     <h1>Expense</h1>
 
     <div class="form-control">
         <label for="merchant">Merchant*</label>
-        <input id="merchant" type="text" placeholder="Shoes">
+        <input name="merchant" id="merchant" type="text" placeholder="Shoes">
     </div>
 
     <div class="form-control">
         <label for="total">Total*</label>
-        <input id="total" type="text" placeholder="123.00">
+        <input name="total" id="total" type="text" placeholder="123.00">
         <select name="vault" id="vault">
             <option value="bgn">BGN лв</option>
         </select>
@@ -42,12 +42,12 @@
 
     <div class="form-control">
         <label for="description">Description*</label>
-        <input id="description" type="text" placeholder="Shoes description...">
+        <input name="description" id="description" type="text" placeholder="Shoes description...">
     </div>
 
     <div class="form-control">
         <label for="report">Report: </label>
-        <input type="checkbox" id="report" />
+        <input name="report" type="checkbox" id="report" />
     </div>
 
     <button type="Submit">Save</button>
