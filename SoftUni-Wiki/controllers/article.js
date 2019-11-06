@@ -71,6 +71,7 @@ module.exports = {
             }
         
             return result.then(() => {
+              
               res.redirect('/');
             }).catch(err => {
               if (err.name === 'ValidationError') {

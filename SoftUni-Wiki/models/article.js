@@ -4,7 +4,6 @@ const articleSchema = new mongoose.Schema({
     title: {
         unique: true,
         type: String,
-        unique: true, 
     },
     description: {
         type: String,
