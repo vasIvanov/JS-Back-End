@@ -1,3 +1,24 @@
+    {{#if errors.username}}
+    <div id="notifications">
+      <p id="notification-message">
+        {{errors.username.message}}
+      </p>
+    </div>
+    {{/if}}
+    {{#if errors.password.message}}
+     <div id="notifications">
+      <p id="notification-message">
+        {{errors.password.message}}
+      </p>
+    </div>
+    {{/if}}
+    {{#if errors.repeatPassword}}
+     <div id="notifications">
+      <p id="notification-message">
+        {{errors.repeatPassword}}
+      </p>
+    </div>
+    {{/if}}
 <form method="POST" action="/register">
     <h1>Register</h1>
 

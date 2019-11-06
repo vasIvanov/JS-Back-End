@@ -6,11 +6,13 @@ const userSchema = new mongoose.Schema({
     username: {
         required: true,
         type: String,
-        unique: true, 
+        unique: true,
+        minlength: [4, 'Username should be at least 4 chars long!'] 
     },
     password: {
         required: true,
         type: String,
+        minlength: [8, 'Password must be at least 8 chars long!']
     },
     amount: {
         type: mongoose.Schema.Types.Number,

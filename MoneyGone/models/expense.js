@@ -3,14 +3,15 @@ const mongoose = require('mongoose');
 const expenseSchema = new mongoose.Schema({
     merchant: {
         type: String,
-        required: true
+        required: true,
+        minlength: [4, 'Merchant must be at least 4 chars long!']
     },
     date: {
         type: String,
     },
     total: {
         type: mongoose.Schema.Types.Number,
-        required: true
+        required: true,
     },
     category: {
         type: String,
